@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.leandro.workshopmongo.domain.Post;
 import com.leandro.workshopmongo.domain.User;
 import com.leandro.workshopmongo.dto.UserDTO;
 import com.leandro.workshopmongo.services.UserService;
@@ -62,5 +63,13 @@ public class UserResource {
 		obj = service.update(obj);
 		//Ao inserir no banco vai retornar uma respota vazia. porém com o cabeçario a url do novo obj criado. (boa pratica)
 		return ResponseEntity.noContent().build();
+	}
+	@RequestMapping(value = "/{id}/posts", method = RequestMethod.GET)
+	//Retorna uma lista do tipo post
+	public ResponseEntity<List<Post>> findPosts(@PathVariable String id) {
+		User obj = service.FindById(id);
+		List<User> list = service.findAll();
+		//retorna a lista de posts associada ao usuario
+		return ResponseEntity.ok().body(obj.getPosts());
 	}
 }
